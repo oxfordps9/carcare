@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Car Care — Full-Service Auto Repair</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal:#1B1C1E;
+    --charcoal-2:#242629;
+    --steel:#54585F;
+    --steel-light:#8A8F97;
+    --paper:#EDEAE3;
+    --paper-2:#F7F5F0;
+    --orange:#F2611A;
+    --orange-dark:#C94E13;
+    --yellow:#FFC53D;
+    --line:rgba(255,255,255,0.10);
+    --line-dark:rgba(0,0,0,0.10);
+    --radius:2px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--paper);
+    color:var(--charcoal);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block; max-width:100%;}
+  a{color:inherit; text-decoration:none;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+  h1,h2,h3,.display{
+    font-family:'Oswald', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    line-height:1.05;
+  }
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--orange);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px; height:2px;
+    background:var(--orange);
+    display:inline-block;
+  }
+
+  /* hazard stripe divider — used sparingly as a workshop safety-stripe motif */
+  .hazard{
+    height:10px;
+    background:repeating-linear-gradient(
+      -45deg,
+      var(--charcoal),
+      var(--charcoal) 14px,
+      var(--yellow) 14px,
+      var(--yellow) 28px
+    );
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:var(--charcoal);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    max-width:1180px; margin:0 auto;
+  }
+  .logo{
+    display:flex; align-items:center; gap:12px;
+    color:var(--paper-2);
+  }
+  .logo .mark{
+    width:38px; height:38px;
+    background:var(--orange);
+    display:flex; align-items:center; justify-content:center;
+    border-radius:2px;
+    flex-shrink:0;
+  }
+  .logo .mark svg{width:22px; height:22px;}
+  .logo-text{font-family:'Oswald', sans-serif; text-transform:uppercase; font-size:20px; font-weight:600; letter-spacing:0.02em;}
+  .logo-text span{color:var(--orange);}
+  .logo-sub{font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:0.16em; color:var(--steel-light); text-transform:uppercase;}
+  nav.links{display:flex; gap:32px; align-items:center;}
+  nav.links a{
+    color:var(--paper); font-size:14px; font-weight:500;
+    padding:6px 0; border-bottom:2px solid transparent;
+    transition:border-color .2s, color .2s;
+  }
+  nav.links a:hover{border-color:var(--orange); color:var(--orange);}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    font-family:'Inter', sans-serif; font-weight:600; font-size:14px;
+    padding:12px 22px; border-radius:2px; border:2px solid transparent;
+    cursor:pointer; transition:transform .15s ease, background .2s, color .2s, border-color .2s;
+    white-space:nowrap;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--orange); color:#fff;}
+  .btn-primary:hover{background:var(--orange-dark);}
+  .btn-outline{border-color:var(--paper); color:var(--paper);}
+  .btn-outline:hover{border-color:var(--orange); color:var(--orange);}
+  .btn-outline-dark{border-color:var(--charcoal); color:var(--charcoal);}
+  .btn-outline-dark:hover{border-color:var(--orange); color:var(--orange-dark);}
+  .call-nav{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--charcoal);
+    color:var(--paper-2);
+    position:relative;
+    overflow:hidden;
+    padding:88px 0 0 0;
+  }
+  .hero-inner{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;
+    max-width:1180px; margin:0 auto; padding:0 28px 80px;
+    position:relative; z-index:2;
+  }
+  .hero h1{
+    font-size:clamp(40px, 6vw, 74px);
+    margin:18px 0 22px;
+    color:#fff;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--orange);
+    display:block;
+  }
+  .hero p.lede{
+    font-size:17px; color:var(--steel-light); max-width:460px; margin-bottom:32px;
+  }
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:44px;}
+  .hero-stats{
+    display:flex; gap:0; border-top:1px solid var(--line);
+    max-width:480px;
+  }
+  .hero-stats div{
+    flex:1; padding:16px 18px 0; border-right:1px solid var(--line);
+  }
+  .hero-stats div:last-child{border-right:none;}
+  .hero-stats .num{font-family:'JetBrains Mono', monospace; font-size:26px; color:var(--yellow); font-weight:700;}
+  .hero-stats .lbl{font-size:11px; color:var(--steel-light); text-transform:uppercase; letter-spacing:0.08em; margin-top:4px;}
+
+  /* hero visual: stylised diagnostic gauge cluster */
+  .hero-visual{position:relative; display:flex; align-items:center; justify-content:center;}
+  .gauge-card{
+    background:var(--charcoal-2);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:26px;
+    width:100%;
+    max-width:380px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+  .gauge-card .ticket-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--steel-light);
+    text-transform:uppercase; letter-spacing:0.08em;
+    border-bottom:1px dashed var(--line); padding-bottom:14px; margin-bottom:18px;
+  }
+  .gauge-card .ticket-head .ro{color:var(--yellow);}
+  .gauge-row{display:flex; align-items:center; gap:14px; margin-bottom:16px;}
+  .gauge-row:last-child{margin-bottom:0;}
+  .gauge-ring{
+    width:52px; height:52px; border-radius:50%;
+    border:3px solid var(--steel);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; position:relative;
+  }
+  .gauge-ring.ok{border-color:#3CBF7A;}
+  .gauge-ring.warn{border-color:var(--yellow);}
+  .gauge-ring span{font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:700; color:var(--paper-2);}
+  .gauge-info .g-title{font-size:14px; font-weight:600; color:#fff;}
+  .gauge-info .g-sub{font-size:12px; color:var(--steel-light);}
+  .gauge-card .stamp{
+    margin-top:20px; padding-top:16px; border-top:1px dashed var(--line);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .stamp .stamp-badge{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em;
+    color:#3CBF7A; border:1px solid #3CBF7A; padding:5px 10px; border-radius:2px;
+    transform:rotate(-4deg);
+  }
+  .stamp .stamp-eta{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--steel-light);}
+
+  /* ---------- TRUST / MARQUEE STRIP ---------- */
+  .strip{
+    background:var(--paper-2); border-bottom:1px solid var(--line-dark);
+    overflow:hidden; white-space:nowrap; padding:14px 0;
+  }
+  .strip-track{
+    display:inline-flex; gap:48px; animation:scroll 28s linear infinite;
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--steel);
+  }
+  .strip:hover .strip-track{animation-play-state:paused;}
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  .strip-track span{color:var(--orange);}
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:96px 0;}
+  .sec-head{max-width:640px; margin-bottom:56px;}
+  .sec-head h2{font-size:clamp(30px,4vw,44px); margin-top:14px;}
+  .sec-head p{color:var(--steel); font-size:16px; margin-top:14px; max-width:520px;}
+
+  /* ---------- SERVICES : WORK ORDER TICKETS (signature element) ---------- */
+  .services-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:24px;
+  }
+  .ticket{
+    background:var(--paper-2);
+    border:1px solid var(--line-dark);
+    border-radius:3px;
+    position:relative;
+    padding:26px 24px 22px;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .ticket:hover{transform:translateY(-4px); box-shadow:0 20px 34px -20px rgba(0,0,0,0.25);}
+  .ticket::before{
+    content:"";
+    position:absolute; top:-1px; left:24px; right:24px; height:0;
+    border-top:2px dashed var(--steel-light);
+    opacity:0.5;
+  }
+  .ticket-top{
+    display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px;
+  }
+  .ticket-icon{
+    width:46px; height:46px; border-radius:2px; background:var(--charcoal);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .ticket-icon svg{width:24px; height:24px; stroke:var(--yellow);}
+  .ticket-ro{font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--steel-light);}
+  .ticket h3{font-size:19px; margin-bottom:8px; letter-spacing:0;}
+  .ticket p{font-size:14px; color:var(--steel); margin-bottom:18px;}
+  .ticket-meta{
+    display:flex; justify-content:space-between; align-items:center;
+    border-top:1px solid var(--line-dark); padding-top:14px;
+    font-family:'JetBrains Mono', monospace; font-size:13px;
+  }
+  .ticket-meta .price{color:var(--orange-dark); font-weight:700;}
+  .ticket-meta .time{color:var(--steel-light);}
+
+  /* ---------- PROCESS (real sequence -> numbered is justified) ---------- */
+  .process{background:var(--charcoal); color:var(--paper-2);}
+  .process .sec-head p{color:var(--steel-light);}
+  .process-list{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+    border-top:1px solid var(--line);
+  }
+  .process-item{
+    padding:28px 22px 0; border-right:1px solid var(--line);
+    position:relative;
+  }
+  .process-item:last-child{border-right:none;}
+  .process-num{
+    font-family:'JetBrains Mono', monospace; font-size:34px; color:var(--orange);
+    font-weight:700; display:block; margin-bottom:14px;
+  }
+  .process-item h3{font-size:16px; color:#fff; margin-bottom:8px; letter-spacing:0.02em;}
+  .process-item p{font-size:13.5px; color:var(--steel-light);}
+
+  /* ---------- WHY US ---------- */
+  .why{display:grid; grid-template-columns:0.9fr 1.1fr; gap:64px; align-items:center;}
+  .why-visual{
+    background:var(--paper-2); border:1px solid var(--line-dark); border-radius:4px; padding:34px;
+  }
+  .why-visual .plate{
+    background:var(--charcoal); color:var(--yellow); font-family:'JetBrains Mono', monospace;
+    text-align:center; padding:18px; border-radius:3px; font-size:22px; letter-spacing:0.2em; font-weight:700;
+    margin-bottom:22px; border:2px solid var(--yellow);
+  }
+  .why-visual .plate small{display:block; font-size:10px; color:var(--steel-light); letter-spacing:0.14em; margin-top:6px; font-weight:400;}
+  .why-visual ul{list-style:none; display:flex; flex-direction:column; gap:14px;}
+  .why-visual li{display:flex; align-items:center; gap:12px; font-size:14px; color:var(--charcoal);}
+  .why-visual li .dot{width:8px; height:8px; background:#3CBF7A; border-radius:50%; flex-shrink:0;}
+  .why-list{display:flex; flex-direction:column; gap:28px;}
+  .why-row{display:flex; gap:18px;}
+  .why-row .num{font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--orange); flex-shrink:0; padding-top:3px;}
+  .why-row h3{font-size:18px; margin-bottom:6px; text-transform:none; font-family:'Inter',sans-serif; font-weight:700;}
+  .why-row p{font-size:14.5px; color:var(--steel);}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testimonials{background:var(--paper-2);}
+  .t-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .t-card{background:#fff; border:1px solid var(--line-dark); padding:28px; border-radius:3px;}
+  .t-stars{color:var(--yellow); font-size:14px; letter-spacing:2px; margin-bottom:16px;}
+  .t-card p.quote{font-size:14.5px; color:var(--charcoal); margin-bottom:20px;}
+  .t-who{display:flex; align-items:center; gap:12px;}
+  .t-avatar{width:38px; height:38px; border-radius:50%; background:var(--charcoal); color:var(--yellow); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-weight:700; font-size:14px;}
+  .t-name{font-size:13.5px; font-weight:600;}
+  .t-car{font-size:12px; color:var(--steel-light); font-family:'JetBrains Mono', monospace;}
+
+  /* ---------- GALLERY ---------- */
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    grid-auto-rows:160px;
+    gap:14px;
+  }
+  .gallery-grid figure{
+    position:relative; margin:0; overflow:hidden; border-radius:3px;
+    background:var(--charcoal-2);
+  }
+  .gallery-grid figure img{
+    width:100%; height:100%; object-fit:cover;
+    display:block;
+    transition:transform .5s ease;
+  }
+  .gallery-grid figure:hover img{transform:scale(1.06);}
+  .gallery-grid figure figcaption{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:10px 12px;
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.04em;
+    color:#fff;
+    background:linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0));
+  }
+  .gallery-grid .g-wide{grid-column:span 2; grid-row:span 2;}
+  .gallery-grid .g-tall{grid-row:span 2;}
+  @media (max-width:900px){
+    .gallery-grid{grid-template-columns:repeat(2,1fr); grid-auto-rows:150px;}
+    .gallery-grid .g-wide{grid-column:span 2; grid-row:span 1;}
+    .gallery-grid .g-tall{grid-row:span 1;}
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--charcoal); color:var(--paper-2);}
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:64px;}
+  .contact h2{font-size:clamp(30px,4vw,42px); margin-bottom:16px;}
+  .contact p.lede{color:var(--steel-light); font-size:15.5px; max-width:440px; margin-bottom:30px;}
+  .hours-card{
+    background:var(--charcoal-2); border:1px solid var(--line); border-radius:4px; padding:26px;
+  }
+  .hours-row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--line); font-size:14px;}
+  .hours-row:last-child{border-bottom:none;}
+  .hours-row .day{color:var(--paper-2); font-weight:500;}
+  .hours-row .time{font-family:'JetBrains Mono', monospace; color:var(--steel-light);}
+  .hours-row.today .day, .hours-row.today .time{color:var(--yellow);}
+  form.quote{display:flex; flex-direction:column; gap:14px;}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field label{font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:var(--steel-light); font-family:'JetBrains Mono', monospace;}
+  .field input, .field select, .field textarea{
+    background:var(--charcoal-2); border:1px solid var(--line); color:#fff;
+    padding:12px 14px; border-radius:2px; font-family:'Inter', sans-serif; font-size:14px;
+  }
+  .field input::placeholder, .field textarea::placeholder{color:var(--steel-light);}
+  .field textarea{resize:vertical; min-height:80px;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--charcoal-2); border-top:1px solid var(--line); padding:40px 0 28px;}
+  .foot-grid{display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; color:var(--steel-light); font-size:13px;}
+  .foot-grid a{color:var(--paper-2);}
+  .foot-grid a:hover{color:var(--orange);}
+  .foot-links{display:flex; gap:24px;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    nav.links{display:none;}
+    .hero-inner{grid-template-columns:1fr;}
+    .hero-visual{order:-1;}
+    .services-grid{grid-template-columns:repeat(2,1fr);}
+    .process-list{grid-template-columns:repeat(2,1fr);}
+    .process-item{border-bottom:1px solid var(--line); padding-bottom:24px;}
+    .why{grid-template-columns:1fr;}
+    .t-grid{grid-template-columns:1fr;}
+    .contact-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .services-grid{grid-template-columns:1fr;}
+    .process-list{grid-template-columns:1fr;}
+    .hero-stats{flex-wrap:wrap;}
+    .hero-stats div{flex:1 1 45%; border-right:none; margin-bottom:14px;}
+    .field-row{grid-template-columns:1fr;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .strip-track{animation:none;}
+    *{transition:none !important;}
+  }
+
+  :focus-visible{outline:2px solid var(--orange); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">
+      <div class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1B1C1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      </div>
+      <div>
+        <div class="logo-text">Car<span>Care</span></div>
+        <div class="logo-sub">Auto Repair &amp; Diagnostics</div>
+      </div>
+    </div>
+    <nav class="links">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#why">Why Us</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="btn btn-primary">Book a Service</a>
+  </div>
+</header>
+
+<div class="hazard"></div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">ASE-Certified Shop · Karachi</div>
+      <h1>We fix it right<em>the first time.</em></h1>
+      <p class="lede">Honest diagnostics, transparent pricing, and technicians who explain what's wrong before they touch a bolt. Your car, back on the road, done properly.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-primary">Get a Free Estimate</a>
+        <a href="tel:+922134567890" class="btn btn-outline">Call the Shop</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="num">18+</div>
+          <div class="lbl">Years Running</div>
+        </div>
+        <div>
+          <div class="num">9,400</div>
+          <div class="lbl">Cars Serviced</div>
+        </div>
+        <div>
+          <div class="num">4.9</div>
+          <div class="lbl">Avg. Rating</div>
+        </div>
+        <div>
+          <div class="num">24h</div>
+          <div class="lbl">Turnaround*</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="gauge-card">
+        <div class="ticket-head">
+          <span>Diagnostic Report</span>
+          <span class="ro">RO #4471</span>
+        </div>
+        <div class="gauge-row">
+          <div class="gauge-ring ok"><span>OK</span></div>
+          <div class="gauge-info">
+            <div class="g-title">Engine &amp; Fluids</div>
+            <div class="g-sub">All levels within range</div>
+          </div>
+        </div>
+        <div class="gauge-row">
+          <div class="gauge-ring ok"><span>OK</span></div>
+          <div class="gauge-info">
+            <div class="g-title">Brake System</div>
+            <div class="g-sub">Pads at 78% · rotors clean</div>
+          </div>
+        </div>
+        <div class="gauge-row">
+          <div class="gauge-ring warn"><span>!</span></div>
+          <div class="gauge-info">
+            <div class="g-title">Battery Health</div>
+            <div class="g-sub">72% · recommend testing</div>
+          </div>
+        </div>
+        <div class="stamp">
+          <span class="stamp-badge">✓ Inspected</span>
+          <span class="stamp-eta">Ready in 2h 40m</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="strip-track">
+    <span>&#9679;</span> Free 21-Point Inspection
+    <span>&#9679;</span> OEM &amp; Aftermarket Parts
+    <span>&#9679;</span> 12-Month Labor Warranty
+    <span>&#9679;</span> Pickup &amp; Drop-off Available
+    <span>&#9679;</span> Free 21-Point Inspection
+    <span>&#9679;</span> OEM &amp; Aftermarket Parts
+    <span>&#9679;</span> 12-Month Labor Warranty
+    <span>&#9679;</span> Pickup &amp; Drop-off Available
+  </div>
+</div>
+
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Work Orders</div>
+      <h2>What we handle on the lift</h2>
+      <p>Every job runs on a numbered repair order — you always know what's being done, what it costs, and how long it'll take.</p>
+    </div>
+    <div class="services-grid">
+
+      <div class="ticket">
+        <div class="ticket-top">
+          <div class="ticket-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M6 6l1 14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-14"/></svg></div>
+          <span class="ticket-ro">RO 001</span>
+        </div>
+        <h3>Oil &amp; Filter Change</h3>
+        <p>Full synthetic or conventional, plus a 21-point visual inspection every time.</p>
+        <div class="ticket-meta"><span class="price">From Rs 3,500</span><span class="time">~40 min</span></div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-top">
+          <div class="ticket-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg></div>
+          <span class="ticket-ro">RO 002</span>
+        </div>
+        <h3>Brake Repair</h3>
+        <p>Pads, rotors, calipers, and fluid flush — road-tested before you leave.</p>
+        <div class="ticket-meta"><span class="price">From Rs 8,000</span><span class="time">1–2 hrs</span></div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-top">
+          <div class="ticket-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></div>
+          <span class="ticket-ro">RO 003</span>
+        </div>
+        <h3>Engine Diagnostics</h3>
+        <p>Check-engine light? Full OBD-II scan with a plain-language explanation.</p>
+        <div class="ticket-meta"><span class="price">From Rs 2,000</span><span class="time">~30 min</span></div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-top">
+          <div class="ticket-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div>
+          <span class="ticket-ro">RO 004</span>
+        </div>
+        <h3>Tire Service</h3>
+        <p>Rotation, balancing, alignment, and replacement from our in-stock range.</p>
+        <div class="ticket-meta"><span class="price">From Rs 1,500</span><span class="time">~45 min</span></div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-top">
+          <div class="ticket-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-4 4-7 7.5-7 11a7 7 0 0 0 14 0c0-3.5-3-7-7-11z"/></svg></div>
+          <span class="ticket-ro">RO 005</span>
+        </div>
+        <h3>AC Repair &amp; Regas</h3>
+        <p>Leak check, compressor service, and a full regas so the cold air comes back.</p>
+        <div class="ticket-meta"><span class="price">From Rs 4,500</span><span class="time">1–3 hrs</span></div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-top">
+          <div class="ticket-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1"/><path d="M8 8V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M9 13h2M13 13h2"/></svg></div>
+          <span class="ticket-ro">RO 006</span>
+        </div>
+        <h3>Battery &amp; Electrical</h3>
+        <p>Load testing, alternator checks, and battery replacement on the spot.</p>
+        <div class="ticket-meta"><span class="price">From Rs 2,500</span><span class="time">~30 min</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">The Sequence</div>
+      <h2>From drop-off to drive-away</h2>
+      <p>Four stages, every job, no shortcuts.</p>
+    </div>
+    <div class="process-list">
+      <div class="process-item">
+        <span class="process-num">01</span>
+        <h3>Drop Off &amp; Scan</h3>
+        <p>Tell us what's wrong, or let our techs run a full diagnostic scan to find out.</p>
+      </div>
+      <div class="process-item">
+        <span class="process-num">02</span>
+        <h3>Written Estimate</h3>
+        <p>You get a line-by-line quote before any work starts — no surprise charges.</p>
+      </div>
+      <div class="process-item">
+        <span class="process-num">03</span>
+        <h3>Repair &amp; Test</h3>
+        <p>Certified techs do the work, then road-test the vehicle to confirm the fix.</p>
+      </div>
+      <div class="process-item">
+        <span class="process-num">04</span>
+        <h3>Pickup or Delivery</h3>
+        <p>Collect at the shop or have it dropped at your door, fully cleaned.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap why">
+    <div class="why-visual">
+      <div class="plate">CARE · 001
+        <small>Certified Since 2008</small>
+      </div>
+      <ul>
+        <li><span class="dot"></span> All work backed by a 12-month warranty</li>
+        <li><span class="dot"></span> Genuine and quality aftermarket parts only</li>
+        <li><span class="dot"></span> Fixed, written pricing — approved by you first</li>
+        <li><span class="dot"></span> Loaner cars available for longer repairs</li>
+      </ul>
+    </div>
+    <div>
+      <div class="eyebrow">Why Car Care</div>
+      <h2 style="margin:14px 0 30px; font-size:clamp(28px,4vw,38px);">Straight talk, sharp tools</h2>
+      <div class="why-list">
+        <div class="why-row">
+          <span class="num mono">A</span>
+          <div>
+            <h3>Techs who show you the problem</h3>
+            <p>We pull up the failing part or the scan reading before we recommend anything — you decide with the full picture.</p>
+          </div>
+        </div>
+        <div class="why-row">
+          <span class="num mono">B</span>
+          <div>
+            <h3>No pressure, no upsell</h3>
+            <p>Only the items on your estimate get touched. Anything extra we spot gets flagged for next time, not forced today.</p>
+          </div>
+        </div>
+        <div class="why-row">
+          <span class="num mono">C</span>
+          <div>
+            <h3>Real turnaround times</h3>
+            <p>We quote realistic hours, not optimistic ones, and text you the moment your car's ready.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Inside The Shop</div>
+      <h2>On the lift, in the bay</h2>
+      <p>A look at the floor where the actual work happens — real bays, real tools, real cars.</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-wide">
+        <img src="https://images.unsplash.com/photo-1723099971299-3789db53604c?auto=format&fit=crop&w=1200&q=70" alt="Car raised on a hydraulic lift for undercarriage repair">
+        <figcaption>Car on the lift — undercarriage check</figcaption>
+      </figure>
+      <figure>
+        <img src="https://images.unsplash.com/photo-1676018366904-c083ed678e60?auto=format&fit=crop&w=700&q=70" alt="Mechanic working on a car engine in the garage">
+        <figcaption>Engine bay work</figcaption>
+      </figure>
+      <figure class="g-tall">
+        <img src="https://images.unsplash.com/photo-1702146713858-8e7d1cc29fe8?auto=format&fit=crop&w=700&q=70" alt="Mechanic working underneath a vehicle">
+        <figcaption>Underbody repair</figcaption>
+      </figure>
+      <figure>
+        <img src="https://images.unsplash.com/photo-1698382318239-2b134ca8fa4c?auto=format&fit=crop&w=700&q=70" alt="Wrenches and tools hanging on a workshop rack">
+        <figcaption>Tool wall</figcaption>
+      </figure>
+      <figure class="g-wide">
+        <img src="https://images.unsplash.com/photo-1619505372149-07875c35b313?auto=format&fit=crop&w=1200&q=70" alt="Cars parked outside the garage building">
+        <figcaption>Car Care — shop front &amp; parking bay</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials" id="reviews">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Customer Reports</div>
+      <h2>From the waiting room</h2>
+    </div>
+    <div class="t-grid">
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="quote">Told me exactly what my brakes needed and what could wait a few months. Didn't feel rushed into anything.</p>
+        <div class="t-who">
+          <div class="t-avatar">AR</div>
+          <div><div class="t-name">Ahmed R.</div><div class="t-car">Honda Civic · 2019</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="quote">Check-engine light had been on for weeks. They found the sensor, fixed it same day, and it hasn't come back.</p>
+        <div class="t-who">
+          <div class="t-avatar">SF</div>
+          <div><div class="t-name">Sana F.</div><div class="t-car">Suzuki Cultus · 2021</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="quote">AC stopped blowing cold right before summer. In and out in under two hours, ice cold since.</p>
+        <div class="t-who">
+          <div class="t-avatar">BK</div>
+          <div><div class="t-name">Bilal K.</div><div class="t-car">Toyota Corolla · 2017</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div>
+      <div class="eyebrow">Get In Touch</div>
+      <h2>Book your bay</h2>
+      <p class="lede">Send us a few details and we'll call to confirm a drop-off time — usually within the hour during shop hours.</p>
+
+      <div class="hours-card">
+        <div class="hours-row"><span class="day">Monday – Friday</span><span class="time">8:00 – 20:00</span></div>
+        <div class="hours-row today"><span class="day">Saturday</span><span class="time">9:00 – 18:00</span></div>
+        <div class="hours-row"><span class="day">Sunday</span><span class="time">Closed</span></div>
+        <div class="hours-row"><span class="day">Shop Address</span><span class="time">Plot 14-C, Block 6, PECHS, Shahrah-e-Faisal, Karachi 75400</span></div>
+        <div class="hours-row"><span class="day">Phone</span><span class="time">+92 21 3456 7890</span></div>
+        <div class="hours-row"><span class="day">Email</span><span class="time">service@carcare.pk</span></div>
+      </div>
+    </div>
+
+    <form class="quote" onsubmit="event.preventDefault(); this.querySelector('.submit-msg').style.display='block';">
+      <div class="field-row">
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" type="text" placeholder="Your full name" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" type="tel" placeholder="03xx xxxxxxx" required>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="vehicle">Vehicle</label>
+          <input id="vehicle" type="text" placeholder="e.g. Corolla 2019">
+        </div>
+        <div class="field">
+          <label for="service">Service Needed</label>
+          <select id="service">
+            <option>Oil Change</option>
+            <option>Brake Repair</option>
+            <option>Engine Diagnostics</option>
+            <option>Tire Service</option>
+            <option>AC Repair</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="notes">What's going on?</label>
+        <textarea id="notes" placeholder="Describe the issue or what you'd like done..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="margin-top:6px;">Request Callback</button>
+      <p class="submit-msg mono" style="display:none; color:#3CBF7A; font-size:13px; margin-top:8px;">✓ Got it — we'll call you shortly to confirm.</p>
+    </form>
+  </div>
+</section>
+
+<div class="hazard"></div>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>© 2026 Car Care Auto Repair. All rights reserved.</div>
+    <div class="foot-links">
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+      <a href="tel:+922134567890">+92 21 3456 7890</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
